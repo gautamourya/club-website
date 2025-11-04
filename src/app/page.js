@@ -1,15 +1,4 @@
-// export default function Home() {
-//   return (
-//     <section className="text-center py-20 bg-gradient-to-b from-green-100 to-white">
-//       <h1 className="text-4xl md:text-6xl font-bold text-green-800">
-//         Welcome to Cricket Club 🏏
-//       </h1>
-//       <p className="mt-4 text-lg md:text-xl text-gray-700">
-//         Join our club and become a part of the cricketing community!
-//       </p>
-//     </section>
-//   );
-// }
+
 
 
 

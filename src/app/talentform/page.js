@@ -4,19 +4,23 @@ import { nanoid } from "nanoid";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
-import { useDispatch } from "react-redux";
-import { saveFormData } from "../../store/PlayerSlice";
+import { useDispatch, useSelector } from "react-redux";
+import {asyncTalentForm} from "../../store/actions/userAction"
+// import { saveFormData } from "../../store/PlayerSlice";
 
 const TalentFormPage = () => {
   const dispatch = useDispatch();
   const { register, handleSubmit, reset, watch } = useForm();
   const [step, setStep] = useState(1);
   const router = useRouter();
+  const {  id} = useSelector((s) => s.playerReducer);
+
+  
 
   const Submithandler = (data) => {
     console.log(data);
     const newPlayer = { ...data, id: nanoid() };
-    dispatch(saveFormData(newPlayer));
+  dispatch(asyncTalentForm(id, newPlayer))
     const existingPlayers = JSON.parse(localStorage.getItem("players") || "[]");
     localStorage.setItem("players", JSON.stringify([...existingPlayers, newPlayer]));
     alert("✅ Form Submitted Successfully!");

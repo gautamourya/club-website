@@ -2,10 +2,12 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
+  id: null,
   formData: null,
   formFilled: false,
   videoWatched: false,
   quizCompleted: false,
+  talentForm: {}
 };
 
 const playerSlice = createSlice({
@@ -19,6 +21,10 @@ const playerSlice = createSlice({
     markVideoWatched: (state) => {
       state.videoWatched = true;
     },
+    saveUserID: (state, action) => {
+      state.id = action.payload;
+    },
+    
     markQuizCompleted: (state) => {
       state.quizCompleted = true;
     },
@@ -38,10 +44,13 @@ const playerSlice = createSlice({
         state.formData = action.payload;
         state.formFilled = true;
       }
+    },
+    talentForm: (state, action) => {
+      state.talentForm = action.payload;
     }
   },
 });
 
-export const { saveFormData, markVideoWatched, markQuizCompleted, resetAll, restoreFormData, updateFormData } =
+export const { saveFormData, markVideoWatched, markQuizCompleted, resetAll, restoreFormData, updateFormData ,saveUserID, talentForm} =
   playerSlice.actions;
 export default playerSlice.reducer;
