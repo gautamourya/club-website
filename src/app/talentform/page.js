@@ -25,7 +25,7 @@ const TalentFormPage = () => {
     localStorage.setItem("players", JSON.stringify([...existingPlayers, newPlayer]));
     alert("✅ Form Submitted Successfully!");
     reset();
-    router.push("/player");
+    router.push("/");
   };
 
   const cricketFields = watch(["role", "battingStyle", "bowlingStyle", "level"]);
