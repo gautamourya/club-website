@@ -158,7 +158,7 @@ export default function QuizPage() {
               ></div>
             </div>
             <button
-              onClick={() => router.push("/")}
+              onClick={() => router.push("/talentform")}
               className="bg-green-600 text-white px-8 py-2 rounded-lg font-semibold hover:bg-green-700 transition-all"
             >
               Finish

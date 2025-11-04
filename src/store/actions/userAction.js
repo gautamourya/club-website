@@ -1,5 +1,5 @@
 import axios from "../../utils/axiosConfig"
-import { saveFormData, markVideoWatched, markQuizCompleted} from "../PlayerSlice";
+import { saveFormData, markVideoWatched, markQuizCompleted ,saveUserID ,talentForm} from "../PlayerSlice";
 
 export const asyncUserPersonalInfo = (user) => async (dispatch, getState) => {
   try {
@@ -29,7 +29,9 @@ export const asyncUserPersonalInfo = (user) => async (dispatch, getState) => {
       if (updateRes.status >= 200 && updateRes.status < 300) {
         console.log("User updated successfully:", updateRes.data);
         // Save only the formData part to Redux
+        console.log("update data -> " ,  updateRes)
         dispatch(saveFormData(updateRes.data.formData));
+        dispatch(saveUserID(updateRes.data.id));
         return updateRes.data;
       }
     } else {
@@ -41,7 +43,8 @@ export const asyncUserPersonalInfo = (user) => async (dispatch, getState) => {
         formData: user, 
         formFilled: true,
         videoWatched: false,
-        quizCompleted: false
+        quizCompleted: false,
+talentForm : {}
       };
 
       const res = await axios.post("/users", newUser);
@@ -164,33 +167,61 @@ export const asyncUserQuizWatched = (userId) => async (dispatch, getState) => {
   }
 };
 
-export const asyncUserLogin = (data) => async (dispatch) => {
+
+
+
+export const asyncTalentForm = (userId, talentData) => async (dispatch, getState) => {
   try {
-    // Fetch user by email from db.json
-    const res = await axios.get(`/users?formData.email=${data.email}`);
-    const users = res.data;
+    // PATCH only the 'talentForm' field of this user
+    const res = await axios.patch(`/users/${userId}`, {
+      talentForm: talentData
+    });
+    dispatch(talentForm(talentData))
+    if (res.status >= 200 && res.status < 300) {
+      console.log("Talent form added successfully:", res.data);
 
-    if (users.length > 0) {
-      // Match username & email
-      const user = users.find(
-        (u) =>
-          u.formData.name === data.username &&
-          u.formData.email === data.email
-      );
-
-      if (user) {
-        console.log("✅ Login successful:", user);
-        // Save only the formData part to Redux (not the entire user object)
-        dispatch(saveFormData(user.formData));
-        return { success: true, user: user.formData };
-      } else {
-        return { success: false, message: "Invalid username or email." };
-      }
+      // ✅ Optional: update Redux store if needed
+      // dispatch(saveTalentForm(res.data));
     } else {
-      return { success: false, message: "User not found. Please sign up first." };
+      console.error("Unexpected response:", res);
     }
+
   } catch (error) {
-    console.error("❌ Login error:", error);
-    return { success: false, message: "Something went wrong. Please try again." };
+    console.error("Error updating talentForm:", error);
   }
 };
+
+
+
+
+// export const asyncUserLogin = (data) => async (dispatch) => {
+//   try {
+//     // Fetch user by email from db.json
+//     const res = await axios.get(`/users?formData.email=${data.email}`);
+//     const users = res.data;
+
+//     if (users.length > 0) {
+//       // Match username & email
+//       const user = users.find(
+//         (u) =>
+//           u.formData.name === data.username &&
+//           u.formData.email === data.email
+//       );
+
+//       if (user) {
+//         console.log("✅ Login successful:", user);
+//         // Save only the formData part to Redux (not the entire user object)
+//         dispatch(saveFormData(user.formData));
+//         return { success: true, user: user.formData };
+//       } else {
+//         return { success: false, message: "Invalid username or email." };
+//       }
+//     } else {
+//       return { success: false, message: "User not found. Please sign up first." };
+//     }
+//   } catch (error) {
+//     console.error("❌ Login error:", error);
+//     return { success: false, message: "Something went wrong. Please try again." };
+//   }
+// };
+

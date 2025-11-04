@@ -56,6 +56,7 @@ export default function VideoPage() {
   }, [ended]);
 
   const onEnded = () => {
+    
     setEnded(true);
     // Pass the formData.id to the async action
     dispatch(asyncUserVideoWatched(formData.id));
