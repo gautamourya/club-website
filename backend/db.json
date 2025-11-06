@@ -1,42 +1,5 @@
 {
   "users": [
-    {
-      "id": "r_TfPrCMqBOQuJ8o0exhE",
-      "formData": {
-        "name": "Gautam Maurya",
-        "email": "gautam@gmail.com",
-        "phone": 7489744424,
-        "gender": "Male",
-        "dob": {
-          "day": "20",
-          "month": "April",
-          "year": "2015"
-        },
-        "address": {
-          "address": "kbgyfdxcgvh",
-          "city": "fvgb",
-          "state": "Goa",
-          "zip": "452009"
-        }
-      },
-      "formFilled": true,
-      "videoWatched": true,
-      "quizCompleted": true,
-      "talentForm": {
-        "role": "Batsman",
-        "battingStyle": "Left-hand Bat",
-        "bowlingStyle": "Right Arm Fast",
-        "level": "School",
-        "experience": 5,
-        "teamName": "asdfghjkl;'",
-        "highestScore": 55,
-        "bestBowling": "5/55",
-        "tournaments": "-56",
-        "achievements": null,
-        "videoLink": null,
-        "consent": true,
-        "id": "onO6m3K4Qv7esowkjoNjg"
-      }
-    }
+ 
   ]
 }
