@@ -48,7 +48,7 @@ highestScore: z.preprocess(
 
 
 
-  /* ✅ Best Bowling → format wickets/runs like 5/23 */
+
   bestBowling: z
     .string({
       required_error: "Best bowling figure is required",
@@ -66,29 +66,7 @@ highestScore: z.preprocess(
 
 
 
-// tournaments: z
-//   .preprocess(
-//     (val) => {
-//       if (val === "" || val === null || val === undefined) return null; // allow skip
-//       if (typeof val === "number") return val;
-//       const trimmed = String(val).trim();
-//       if (/^\d+$/.test(trimmed)) return Number(trimmed);
-//       return trimmed;
-//     },
-//     z
-//       .union([
-//         z
-//           .number({
-//             invalid_type_error: "Enter tournaments count or names",
-//           })
-//           .min(0, "Tournaments cannot be negative")
-//           .max(50, "Too many tournaments"),
-//         z
-//           .string()
-//           .min(3, "Write tournament names or number (min 3 chars)")
-//       ])
-//       .nullable() // ✅ make union itself optional
-//   ),
+
 
 
 tournaments: z.preprocess(
@@ -122,8 +100,6 @@ tournaments: z.preprocess(
 ),
 
 
-
-
  
 achievements: z.preprocess(
   (val) => {
@@ -141,8 +117,6 @@ achievements: z.preprocess(
     )
     .nullable() // ✅ allow null directly inside
 ),
-
-
 
 
 videoLink: z.preprocess(
@@ -163,7 +137,6 @@ videoLink: z.preprocess(
   }).refine((val) => val === true, {
     message: "You must agree to the consent to proceed",
   }),
-
 
 }).superRefine((obj, ctx) => {
   const role = (obj.role || "").trim();
