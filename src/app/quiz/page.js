@@ -8,6 +8,11 @@ import { asyncUserQuizWatched ,asyncRenderQuiz  } from "../../store/actions/user
 import { motion } from "framer-motion";
 import { asyncSubmitQuiz } from "../../store/actions/userAction";
 
+import {
+  ArrowRight
+} from "lucide-react";
+
+
 // const questions = [
 //   {
 //     q: "Who holds the record for the highest individual score in an ODI match? (किस खिलाड़ी के नाम एकदिवसीय मैच में सर्वाधिक व्यक्तिगत स्कोर का रिकॉर्ड है?)",
@@ -91,6 +96,7 @@ useEffect(() => {
       try {
         const fiveQuestions = await dispatch(asyncRenderQuiz(id));
         setQuestions(fiveQuestions); 
+           setLoading(false);
        
       } catch (error) {
         console.error("Error fetching quiz:", error);
@@ -184,16 +190,16 @@ useEffect(() => {
 
   // const score = questions.filter((q, i) => selected[i] === q.ans).length;
 
-  // if (loading) {
-  //   return (
-  //     <div className="min-h-screen flex items-center justify-center">
-  //       <div className="text-center">
-  //         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900 mx-auto"></div>
-  //         <p className="mt-4 text-gray-600">Loading...</p>
-  //       </div>
-  //     </div>
-  //   );
-  // }
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900 mx-auto"></div>
+          <p className="mt-4 text-gray-600">Loading...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <motion.div 
@@ -323,13 +329,10 @@ quizCompleted == true ? (
               onClick={() => router.push("/payment")}
               whileHover={{ scale: 1.05, boxShadow: "0 10px 25px rgba(59, 130, 246, 0.3)" }}
               whileTap={{ scale: 0.95 }}
-              className="bg-blue-600 text-white px-10 py-3 rounded-lg font-semibold 
-                shadow-md hover:bg-blue-700 hover:shadow-lg 
-                active:scale-95 active:bg-blue-800 
-                transition-transform transition-colors duration-200 ease-in-out"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
             >
 
-             {quizCompleted ? " Next" : "Finish"}
+             {quizCompleted ? <>Next <ArrowRight size={14} /></> : "Finish"}
             </motion.button>
           </motion.div>
         )}

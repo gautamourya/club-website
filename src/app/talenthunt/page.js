@@ -1,8 +1,3 @@
-
-
-
-
-
 "use client";
 import { useForm, Controller } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
@@ -21,6 +16,7 @@ import {
   Calendar,
   VenusAndMars,
   Home,
+  ArrowRight,
   Building,
   Navigation,
   ChevronDown,
@@ -29,12 +25,14 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { personalInfoValidator } from "../../components/validation/personalInfoValidator";
 import { State } from "country-state-city";
+import { toast } from "react-toastify";
 
 export default function talenthunt() {
   const dispatch = useDispatch();
   const router = useRouter();
   const { formData , formFilled , videoWatched ,quizCompleted } = useSelector((state) => state.playerReducer);
   const [loading, setLoading] = useState(true);
+  const [submitting, setSubmitting] = useState(false);
   const statesList = State.getStatesOfCountry("IN");
 
   const {
@@ -101,25 +99,37 @@ export default function talenthunt() {
     return () => window.removeEventListener("beforeunload", handleBeforeUnload);
   }, [formWatchData]);
 
-  const onSubmit = async(data) => {
-      console.log(data)
-      if(formFilled===true && videoWatched===false && quizCompleted===false){
-        router.push("/video");
-      }else if(formFilled===true && videoWatched===true && quizCompleted===false){
-        router.push("/quiz");
-      }else if(formFilled===true && videoWatched===true && quizCompleted===true){
-        router.push("/payment");
-      }else {
- const result = await dispatch(asyncUserPersonalInfo(data));
-    console.log("Result:", result)
-    if (result) {
+
+  
+
+  const onSubmit = async (data) => {
+    console.log(data);
+
+    if (formFilled === true && videoWatched === false && quizCompleted === false) {
       router.push("/video");
+      return;
+    } else if (formFilled === true && videoWatched === true && quizCompleted === false) {
+      router.push("/quiz");
+      return;
+    } else if (formFilled === true && videoWatched === true && quizCompleted === true) {
+      router.push("/payment");
+      return;
     }
+
+    try {
+      setSubmitting(true);
+      const r8 = await dispatch(asyncUserPersonalInfo(data));
+      console.log("Result:", result);
+      if (result) {
+        toast.success("Personal information saved successfully!");
+        setLoading(false);
+        router.push("/video");
       }
-   
-
-
-
+    } catch (err) {
+      console.error("Save failed:", err);
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   // if (loading) {
@@ -132,6 +142,9 @@ export default function talenthunt() {
   //     </div>
   //   );
   // }
+
+
+
 
   return (
     <motion.main
@@ -362,18 +375,7 @@ export default function talenthunt() {
               />
               <ChevronDown className="absolute right-3 top-3 text-gray-400 pointer-events-none" size={18} />
 
-              {/* <select
-                {...register("address.state")}
-                defaultValue=""
-                className="w-full pl-10 p-2 border border-gray-300 rounded-lg bg-gray-50 focus:ring-2 focus:ring-blue-500 outline-none appearance-none"
-              >
-                <option value="">Select State</option>
-                {statesList.map((s) => (
-                  <option key={s.code || s.name} value={s.name}>
-                    {s.name}
-                  </option>
-                ))}
-              </select> */}
+            
               <Controller
                 name="address.state"
                 control={control}
@@ -453,14 +455,27 @@ export default function talenthunt() {
           </div>
 
           {/* Submit */}
-          <div className="md:col-span-2 flex justify-center mt-4">
-            <button
+          <motion.div
+          initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 1 }}
+          className="md:col-span-2 flex justify-center mt-4">
+            <motion.button
               type="submit"
-              className="px-10 py-3 bg-blue-600 text-white rounded-lg font-semibold shadow-md hover:bg-blue-700 hover:shadow-lg active:scale-95 transition-transform duration-200 ease-in-out"
+              disabled={submitting}
+              className={`inline-flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold shadow-md active:scale-95 transition-transform duration-200 ease-in-out
+                ${submitting ? "opacity-60 cursor-not-allowed hover:bg-blue-600" : "hover:bg-blue-700 hover:shadow-lg active:scale-95"}`}
             >
-              {formFilled ? "Next" : "Save and Continue"}
-            </button>
-          </div>
+              {submitting ? (
+                <span className="flex items-center justify-center">
+                  <span className="inline-block h-4 w-4 mr-2 rounded-full border-2 border-white border-t-transparent animate-spin"></span>
+                  Saving...
+                </span>
+              ) : (
+                formFilled ? <>Next <ArrowRight size={14} /></> : "Save and Continue"
+              )}
+            </motion.button>
+          </motion.div>
         </form>
       </motion.div>
     </motion.main>

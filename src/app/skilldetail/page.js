@@ -357,7 +357,7 @@ const {
                     whileTap={{ scale: 0.95 }}
                     className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg font-medium shadow-md hover:bg-blue-700 transition duration-200"
                   >
-                    🎥 Watch Tutorial
+                     Watch Tutorial
                   </motion.button>
                 </div>
 
